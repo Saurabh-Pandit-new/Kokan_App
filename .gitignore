@@ -1,0 +1,10 @@
+ECHO is on.
+# .gitignore for Java projects
+*.class
+*.log
+/target/
+/node_modules/
+.DS_Store
+.metadata/
+.project
+.classpath
