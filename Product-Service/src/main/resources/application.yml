@@ -1,0 +1,30 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: product-service
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/kokanapp-product
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+cloudinary:
+  cloud_name: duiva99fn
+  api_key: 651856751328677
+  api_secret: No7HWN7TnFfCXMLrw166h6TNsnU
+
+logging:
+  level:
+    org.springframework: INFO

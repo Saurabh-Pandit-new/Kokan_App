@@ -1,0 +1,94 @@
+# =========================
+# ✅ JWT Configuration
+# =========================
+jwt:
+  secret: mySuperSecretKeyForJWT1234567890!
+  expiration: 3600000  # 1 hour in milliseconds
+
+# =========================
+# ✅ Server Configuration
+# =========================
+server:
+  port: 8080
+
+# =========================
+# ✅ Spring Boot & Gateway Configuration
+# =========================
+spring:
+  application:
+    name: api-gateway
+
+  main:
+    web-application-type: reactive  # Ensures WebFlux, not MVC
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true  # Ensure service IDs are lowercase
+
+      routes:
+        # ✅ Public endpoint: Register (no JWT required)
+        - id: user-service-register
+          uri: lb://user-service
+          predicates:
+            - Path=/api/users/register
+          filters: []
+
+        # ✅ Public endpoint: Login (no JWT required)
+        - id: user-service-login
+          uri: lb://user-service
+          predicates:
+            - Path=/api/users/login
+          filters: []
+
+        # 🔐 Admin endpoints (JWT required)
+        - id: user-service-admin
+          uri: lb://user-service
+          predicates:
+            - Path=/api/admin/**
+          filters:
+            - name: JwtAuthFilterFactory
+
+        # 🔐 Secured user endpoints (JWT required)
+        - id: user-service-secured
+          uri: lb://user-service
+          predicates:
+            - Path=/api/users/**
+          filters:
+            - name: JwtAuthFilterFactory
+
+        # 🔐 Product Service routes (JWT required)
+        - id: product-service
+          uri: lb://product-service
+          predicates:
+            - Path=/api/products/**
+          # filters:
+          #   - name: JwtAuthFilterFactory
+
+        # 🔐 Category Service routes (JWT required)
+        - id: category-service
+          uri: lb://category-service
+          predicates:
+            - Path=/api/categories/**
+          # filters:
+          #   - name: JwtAuthFilterFactory
+
+        # 🔐 Order Service routes (JWT required)
+        - id: order-service
+          uri: lb://order-service
+          predicates:
+            - Path=/api/cart/**,/api/orders/**
+          filters:
+            - name: JwtAuthFilterFactory
+
+# =========================
+# ✅ Eureka Client Configuration
+# =========================
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka

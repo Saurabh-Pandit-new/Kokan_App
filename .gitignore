@@ -1,10 +1,27 @@
-ECHO is on.
-# .gitignore for Java projects
+# .gitignore for Java Spring Boot (STS/Eclipse)
+
+# Compiled class files
 *.class
+
+# Logs
 *.log
+
+# Maven/Gradle build folders
 /target/
-/node_modules/
+/build/
+
+# Node.js dependencies (if any)
+node_modules/
+
+# macOS Finder
 .DS_Store
+
+# Eclipse/STS-specific files
 .metadata/
 .project
 .classpath
+.settings/
+
+# Build artifacts
+*.jar
+*.war
